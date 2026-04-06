@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1,
+maximum-scale=1,
+user-scalable=no">
 
 <title>Unified Dashboard</title>
 
@@ -12,6 +17,7 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     background: #f0f2f5;
+    overflow: hidden;
 }
 
 /* Top Bar */
@@ -20,38 +26,67 @@ body {
     display: flex;
     background: #1f2937;
     color: white;
-    padding: 10px;
-    gap: 10px;
+    height: 50px;
 }
 
 /* Buttons */
 
 .tab-btn {
-    padding: 10px 18px;
+
+    flex: 1;
+
     border: none;
+
     cursor: pointer;
+
     font-size: 14px;
+
     background: #374151;
+
     color: white;
-    border-radius: 6px;
-}
 
-.tab-btn:hover {
-    background: #2563eb;
-}
+    font-weight: bold;
 
-/* Active */
+}
 
 .tab-btn.active {
     background: #2563eb;
 }
 
-/* Iframe */
+/* Frame Wrapper */
 
-.viewer {
+.frame-wrap {
+
+    position: fixed;
+
+    top: 50px;
+
+    bottom: 0;
+
+    left: 0;
+
+    right: 0;
+
+}
+
+/* Iframes */
+
+.frame {
+
     width: 100%;
-    height: calc(100vh - 60px);
+
+    height: 100%;
+
     border: none;
+
+    display: none;
+
+}
+
+.frame.active {
+
+    display: block;
+
 }
 
 </style>
@@ -60,62 +95,70 @@ body {
 
 <body>
 
-<!-- Top Buttons -->
-
 <div class="header">
 
-<button class="tab-btn active"
-onclick="loadApp('ot')">
+<button
+class="tab-btn active"
+onclick="go(0)">
 OT Dashboard AI
 </button>
 
-<button class="tab-btn"
-onclick="loadApp('sp5')">
+<button
+class="tab-btn"
+onclick="go(1)">
 SP5 Electrical
 </button>
 
 </div>
 
-<!-- Viewer -->
+<div class="frame-wrap">
 
 <iframe
-id="appFrame"
-class="viewer"
+id="f0"
+class="frame active"
 src="https://poshanm.github.io/OT-dashboard_AI/">
 </iframe>
 
+<iframe
+id="f1"
+class="frame"
+data-src="https://poshanm.github.io/sp5-electrical/">
+</iframe>
+
+</div>
+
 <script>
 
-function loadApp(app) {
+let loaded = [true, false];
 
-    let frame = document.getElementById("appFrame");
+function go(i){
 
-    let buttons =
-        document.querySelectorAll(".tab-btn");
+let frames =
+document.querySelectorAll(".frame");
 
-    buttons.forEach(btn =>
-        btn.classList.remove("active")
-    );
+let buttons =
+document.querySelectorAll(".tab-btn");
 
-    if (app === "ot") {
+frames.forEach(f =>
+f.classList.remove("active"));
 
-        frame.src =
-        "https://poshanm.github.io/OT-dashboard_AI/";
+buttons.forEach(b =>
+b.classList.remove("active"));
 
-        buttons[0]
-        .classList.add("active");
+if(!loaded[i]){
 
-    }
+frames[i].src =
+frames[i].dataset.src;
 
-    if (app === "sp5") {
+loaded[i] = true;
 
-        frame.src =
-        "https://poshanm.github.io/sp5-electrical/";
+}
 
-        buttons[1]
-        .classList.add("active");
+frames[i]
+.classList.add("active");
 
-    }
+buttons[i]
+.classList.add("active");
 
 }
 
