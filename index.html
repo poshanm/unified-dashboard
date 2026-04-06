@@ -20,13 +20,16 @@ body {
     overflow: hidden;
 }
 
-/* Top Bar */
+/* Header */
 
 .header {
+
     display: flex;
+
     background: #1f2937;
-    color: white;
+
     height: 50px;
+
 }
 
 /* Buttons */
@@ -50,10 +53,12 @@ body {
 }
 
 .tab-btn.active {
+
     background: #2563eb;
+
 }
 
-/* Frame Wrapper */
+/* Frame area */
 
 .frame-wrap {
 
@@ -98,9 +103,9 @@ body {
 <div class="header">
 
 <button
-class="tab-btn active"
+class="tab-btn"
 onclick="go(0)">
-OT Dashboard AI
+OT Dashboard
 </button>
 
 <button
@@ -115,7 +120,7 @@ SP5 Electrical
 
 <iframe
 id="f0"
-class="frame active"
+class="frame"
 src="https://poshanm.github.io/OT-dashboard_AI/">
 </iframe>
 
@@ -129,7 +134,18 @@ data-src="https://poshanm.github.io/sp5-electrical/">
 
 <script>
 
-let loaded = [true, false];
+/* Load last tab */
+
+let lastTab =
+localStorage.getItem("lastTab") || 0;
+
+lastTab = Number(lastTab);
+
+/* Track loaded */
+
+let loaded = [true,false];
+
+/* Switch function */
 
 function go(i){
 
@@ -139,11 +155,7 @@ document.querySelectorAll(".frame");
 let buttons =
 document.querySelectorAll(".tab-btn");
 
-frames.forEach(f =>
-f.classList.remove("active"));
-
-buttons.forEach(b =>
-b.classList.remove("active"));
+/* Lazy load */
 
 if(!loaded[i]){
 
@@ -154,11 +166,41 @@ loaded[i] = true;
 
 }
 
+/* Show selected */
+
+frames.forEach(f =>
+f.classList.remove("active"));
+
+buttons.forEach(b =>
+b.classList.remove("active"));
+
 frames[i]
 .classList.add("active");
 
 buttons[i]
 .classList.add("active");
+
+/* Save tab */
+
+localStorage
+.setItem("lastTab", i);
+
+}
+
+/* Auto open last tab */
+
+window.onload = () => {
+
+go(lastTab);
+
+};
+
+/* Register Service Worker */
+
+if("serviceWorker" in navigator){
+
+navigator.serviceWorker
+.register("sw.js");
 
 }
 
