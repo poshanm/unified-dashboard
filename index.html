@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Unified Dashboard</title>
+
+<style>
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+}
+
+/* Top Bar */
+
+.header {
+    display: flex;
+    background: #1f2937;
+    color: white;
+    padding: 10px;
+    gap: 10px;
+}
+
+/* Buttons */
+
+.tab-btn {
+    padding: 10px 18px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    background: #374151;
+    color: white;
+    border-radius: 6px;
+}
+
+.tab-btn:hover {
+    background: #2563eb;
+}
+
+/* Active */
+
+.tab-btn.active {
+    background: #2563eb;
+}
+
+/* Iframe */
+
+.viewer {
+    width: 100%;
+    height: calc(100vh - 60px);
+    border: none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Top Buttons -->
+
+<div class="header">
+
+<button class="tab-btn active"
+onclick="loadApp('ot')">
+OT Dashboard AI
+</button>
+
+<button class="tab-btn"
+onclick="loadApp('sp5')">
+SP5 Electrical
+</button>
+
+</div>
+
+<!-- Viewer -->
+
+<iframe
+id="appFrame"
+class="viewer"
+src="https://poshanm.github.io/OT-dashboard_AI/">
+</iframe>
+
+<script>
+
+function loadApp(app) {
+
+    let frame = document.getElementById("appFrame");
+
+    let buttons =
+        document.querySelectorAll(".tab-btn");
+
+    buttons.forEach(btn =>
+        btn.classList.remove("active")
+    );
+
+    if (app === "ot") {
+
+        frame.src =
+        "https://poshanm.github.io/OT-dashboard_AI/";
+
+        buttons[0]
+        .classList.add("active");
+
+    }
+
+    if (app === "sp5") {
+
+        frame.src =
+        "https://poshanm.github.io/sp5-electrical/";
+
+        buttons[1]
+        .classList.add("active");
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
